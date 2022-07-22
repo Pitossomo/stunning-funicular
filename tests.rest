@@ -1,7 +1,7 @@
 ### Expect { message: 'Wellcome to TestsAPI'}
 GET http://localhost:5000/
 
-### Expect { message: 'Wellcome to TestsAPI'}
+### Expect code 201 and info about the new user
 POST http://localhost:5000/user
 Content-Type: application/json
 
