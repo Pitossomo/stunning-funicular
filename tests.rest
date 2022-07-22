@@ -1,0 +1,11 @@
+### Expect { message: 'Wellcome to TestsAPI'}
+GET http://localhost:5000/
+
+### Expect { message: 'Wellcome to TestsAPI'}
+POST http://localhost:5000/user
+Content-Type: application/json
+
+{
+  "name": "Pitossomo",
+  "email": "pitossomos@hmail.com" 
+}

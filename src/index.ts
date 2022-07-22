@@ -1,5 +1,7 @@
 import { app } from './app'
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server on port ${process.env.PORT} \nhttp://localhost:${process.env.PORT}`)
+const port = process.env.PORT || 5000 
+
+app.listen(port, () => {
+  console.log(`Server on port ${port} \nhttp://localhost:${port}`)
 })

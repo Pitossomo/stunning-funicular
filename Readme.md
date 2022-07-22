@@ -1,3 +1,16 @@
+# Curso - Pirâmide de Testes na Prática Explorando Jest e TDD
+## Testes unitários
+- Pirâmide de testes
+    - ![piramideDeTestes](./readme_images/piramideDeTestes.png)
+    - Quanto maior o tempo de execução, maior o custo do teste e menos testes daquele tipo serão feitos
+- Testes unitários
+    - São os mais simples, testam apenas uma funcionalidade específica de uma classe ou módulo
+    - São os mais rápidos e os mais usados em quantidade
+    - Necessita de mocks para isolar as funcionalidades e torná-las testáveis
+        - Mocks - elementos que simulam as implementações reais para permitir ou facilitar os testes    
+
+-------
+
 # TwiDIO API
 
 #### API desenvolvida para o projeto TwiDIO
@@ -140,3 +153,4 @@ Cria um novo usuário no banco de dados. Todos os campos são obrigatórios
 [ ] Implementar uma mensagem de erro quando tentar cadastrar um usuário com os campos em branco
 
 ### Happy hacking!
+
