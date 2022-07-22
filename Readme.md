@@ -8,34 +8,65 @@
     - São os mais rápidos e os mais usados em quantidade
     - Necessita de mocks para isolar as funcionalidades e torná-las testáveis
         - Mocks - elementos que simulam as implementações reais para permitir ou facilitar os testes
-    - O teste unitário do MessageController já existe, implementaremos o teste unitário do UserRepository no arquivo *UserRepository.test.ts*:
-    ```typescript
-    import getEntityManagerMock from '../__mocks__/getEntityManagerMock'
-    import { UserRepository } from './UserRepository'
-    import { v4 as uuid } from 'uuid'
-    import { User } from '../entities/User'
+    - O teste unitário do MessageController já existe
+    - implementaremos os testes unitários do UserRepository no arquivo *UserRepository.test.ts*:
+        ```typescript
+        import getEntityManagerMock from '../__mocks__/getEntityManagerMock'
+        import { UserRepository } from './UserRepository'
+        import { v4 as uuid } from 'uuid'
+        import { User } from '../entities/User'
 
-    describe('UserRepository', () => {
-    const newId = uuid() 
-    const mockUser: User = {
-        user_id: newId,
-        name: "Pitossomo",
-        email: "pitossomos@hmail.ex"
-    }
+        describe('UserRepository', () => {
+            const newId = uuid() 
+            const mockUser: User = {
+                user_id: newId,
+                name: "Pitossomo",
+                email: "pitossomos@hmail.ex"
+            }
 
-    it('return the saved user when save function is called', async () => {
-        const managerMock = await getEntityManagerMock({ saveReturn: mockUser})
-        const userRepository = new UserRepository(managerMock)
+            it('return the saved user when save function is called', async () => {
+                const managerMock = await getEntityManagerMock({ saveReturn: mockUser})
+                const userRepository = new UserRepository(managerMock)
 
-        const savedUser = await userRepository.save(mockUser)
-        expect(savedUser).toMatchObject({
-        user_id: newId,
-        name: "Pitossomo",
-        email: "pitossomos@hmail.ex"
+                const savedUser = await userRepository.save(mockUser)
+                expect(savedUser).toMatchObject({
+                user_id: newId,
+                name: "Pitossomo",
+                email: "pitossomos@hmail.ex"
+                })
+            })
         })
-    })
-    })
-    ```
+        ```
+    - Implementaremos também os testes unitários do UserService no *UserService.test.ts*:
+        ```typescript
+        import { getCustomRepository } from 'typeorm'
+        import { User } from '../entities/User'
+        import { UserRepository } from '../repositories/UserRepository'
+
+        interface IUserService {
+            userRepository?: UserRepository
+            name: string
+            email: string
+        }
+
+        export class UserService {
+            private userRepository: UserRepository
+            private user: User
+
+            constructor ({
+                userRepository = getCustomRepository(UserRepository),
+                name,
+                email
+            }: IUserService) {
+                this.userRepository = userRepository
+                this.user = new User(name, email)
+            }
+
+            async createUser (): Promise<User> {
+                return await this.userRepository.save(this.user)
+            }
+        }
+        ```
 -------
 
 # TwiDIO API
