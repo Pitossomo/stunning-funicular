@@ -39,34 +39,46 @@
         ```
     - Implementaremos também os testes unitários do UserService no *UserService.test.ts*:
         ```typescript
-        import { getCustomRepository } from 'typeorm'
-        import { User } from '../entities/User'
-        import { UserRepository } from '../repositories/UserRepository'
+        import { getMockUser } from '../__mocks__/mockUser'
+        import { UserService } from './UserService'
 
-        interface IUserService {
-            userRepository?: UserRepository
-            name: string
-            email: string
-        }
+        jest.mock('../repositories/UserRepository')
+        const mockUserRepository = require('../repositories/UserRepository')
 
-        export class UserService {
-            private userRepository: UserRepository
-            private user: User
+        describe('UserService', () => {
+            const mockUser = getMockUser()
 
-            constructor ({
-                userRepository = getCustomRepository(UserRepository),
-                name,
-                email
-            }: IUserService) {
-                this.userRepository = userRepository
-                this.user = new User(name, email)
-            }
+            const userService = new UserService({
+                userRepository: mockUserRepository,
+                name: "Pitossomo",
+                email: "pitossomos@hmail.ex"
+            })
 
-            async createUser (): Promise<User> {
-                return await this.userRepository.save(this.user)
-            }
-        }
+            it('returns the user when saved', async () => {
+                mockUserRepository.save = jest.fn().mockImplementation(() => {
+                    return Promise.resolve(mockUser)
+                })
+                const savedUser = await userService.createUser()
+                expect(savedUser).toHaveProperty("user_id")
+                expect(savedUser).toMatchObject({
+                name: "Pitossomo",
+                email: "pitossomos@hmail.ex"
+                })
+            })
+        })
         ```
+    - Podemos observar que o mockUser chama uma função externa, que poderá se reaproveitada nos testes do repositório e nos demais, e está definida no arquivo *src/\_\_mocks__/mockUser.ts*:
+    ```typescript
+    import { User } from "../entities/User";
+    import { v4 as uuid } from 'uuid'
+
+    export const getMockUser = (): User => ({
+        user_id: uuid(),
+        name: "Pitossomo",
+        email: "pitossomo@hmail.ex"
+    })
+    ```
+
 -------
 
 # TwiDIO API
