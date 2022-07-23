@@ -6,7 +6,7 @@ export function makeMockRequest ({ params, query, body }:
   const request = {
     params: params || {},
     query: query || {},
-    body: {}
+    body: body || {}
   } as unknown
 
   return request as Request
